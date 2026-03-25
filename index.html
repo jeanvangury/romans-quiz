@@ -5,60 +5,74 @@
   <title>Romans Quiz</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: auto; }
-    .question { margin-bottom: 20px; }
+    .question { margin-bottom: 20px; padding: 10px; border-radius: 8px; }
+    .question p { font-weight: bold; }
+    .correct { background-color: #d4edda; }
+    .incorrect { background-color: #f8d7da; }
+    .correct-answer { font-size: 14px; margin-top: 5px; }
+    .center { text-align: center; margin-top: 20px; }
     button { padding: 10px 15px; font-size: 16px; }
-    #result { font-size: 20px; font-weight: bold; margin-top: 20px; }
+    #result { font-size: 20px; font-weight: bold; margin-top: 20px; white-space: pre-line; }
+    .error { color: red; font-size: 14px; }
   </style>
 </head>
 <body>
 
 <h1>📖 Romans Quiz</h1>
+<p><em>Please select the right option for each question.</em></p>
+
 <form id="quizForm"></form>
-<button onclick="submitQuiz()">Submit</button>
+
+<div class="center">
+  <button onclick="submitQuiz()">Submit</button>
+</div>
+
 <div id="result"></div>
+
+<div class="center" id="retakeContainer"></div>
 
 <script>
 const questions = [
-  {q:"What does Paul say the gospel reveals?", options:["God’s anger","God’s righteousness","Human weakness","Law and judgment"], answer:1},
-  {q:"How is God’s invisible nature made known?", options:["Through prophets","Through Scripture alone","Through creation","Through angels"], answer:2},
-  {q:"What leads people to repentance?", options:["Fear of judgment","God’s kindness","Law enforcement","Punishment"], answer:1},
-  {q:"Who is considered a true Jew?", options:["Outwardly circumcised","Born in Israel","Inwardly by the Spirit","Tradition follower"], answer:2},
-  {q:"How many are righteous?", options:["Many","Few","None","Only Jews"], answer:2},
-  {q:"Justification comes through:", options:["Works","Faith in Jesus","Sacrifice","Obedience"], answer:1},
-  {q:"Abraham was justified by:", options:["Works","Circumcision","Faith","Law"], answer:2},
-  {q:"Righteousness credited before:", options:["Obedience","Circumcision","Belief","Leaving land"], answer:1},
-  {q:"Sin entered through:", options:["Moses","Abraham","Adam","David"], answer:2},
-  {q:"Suffering produces:", options:["Fear","Weakness","Perseverance","Confusion"], answer:2},
-  {q:"Believers are dead to:", options:["Law","Sin","World","Judgment"], answer:1},
-  {q:"Wages of sin:", options:["Punishment","Death","Separation","Judgment"], answer:1},
-  {q:"Law compared to:", options:["Friendship","Marriage","Servanthood","Brotherhood"], answer:1},
-  {q:"Paul struggles with:", options:["Doing what he wants","Not knowing law","Doing what he hates","Ignoring God"], answer:2},
-  {q:"No condemnation for:", options:["All","Righteous","In Christ","Obedient"], answer:2},
-  {q:"Helps in weakness:", options:["Law","Angels","Spirit","Faith"], answer:2},
-  {q:"Separates from God's love:", options:["Sin","Death","Nothing","Trials"], answer:2},
-  {q:"God told Rebekah:", options:["Younger serves older","Older serves younger","Equal","None"], answer:1},
-  {q:"God has mercy on:", options:["Deserving","Obedient","Whom He wills","Israel"], answer:2},
-  {q:"Faith comes by:", options:["Reading","Hearing Word","Prayer","Obedience"], answer:1},
-  {q:"Who will be saved?", options:["Righteous","Confess & believe","Jews","Obedient"], answer:1},
-  {q:"Israel is like a:", options:["Fig tree","Olive tree","Vine","Cedar"], answer:1},
-  {q:"Gentiles are:", options:["Natural branches","Broken","Wild grafted","Root"], answer:2},
-  {q:"Offer what sacrifice?", options:["Burnt","Living","Sin","Grain"], answer:1},
-  {q:"Transformation by:", options:["Effort","Discipline","Renewing mind","Prayer"], answer:2},
-  {q:"Authorities from:", options:["Govt","People","God","Leaders"], answer:2},
-  {q:"Love fulfills:", options:["Faith","Law","Grace","Justice"], answer:1},
-  {q:"Do not judge over:", options:["Sin","Faith","Disputable matters","Truth"], answer:2},
-  {q:"Kingdom is about:", options:["Food","Rules","Righteousness peace joy","Sacrifice"], answer:2},
-  {q:"Christ served:", options:["Gentiles","Jews","Poor","All"], answer:1},
-  {q:"God fills with:", options:["Strength","Knowledge","Joy & peace","Faith"], answer:2},
-  {q:"Servant commended:", options:["Priscilla","Phoebe","Mary","Junia"], answer:1},
-  {q:"Watch out for:", options:["False teachers","Govt","Persecution","Poverty"], answer:0},
-  {q:"Power of salvation:", options:["Law","Gospel","Faith","Grace"], answer:1},
-  {q:"Law reveals:", options:["Save","Justify","Sin","Bless"], answer:2},
-  {q:"Gives life to dead:", options:["Angels","God","Faith","Spirit"], answer:1},
-  {q:"Reigns through righteousness:", options:["Law","Grace","Faith","Spirit"], answer:1},
-  {q:"Led by Spirit:", options:["Servants","Believers","Sons of God","Apostles"], answer:2},
-  {q:"Israel pursued:", options:["Faith","Grace","Righteousness","Salvation"], answer:2},
-  {q:"Root supports branches:", options:["Faith","Law","Patriarchs/promises","Covenant"], answer:2}
+  {q:"What does Paul say the gospel reveals about God?", options:["God’s anger","God’s righteousness","Human weakness","Law and judgment"], answer:1, chapter:1},
+  {q:"How is God’s invisible nature clearly seen by humanity?", options:["Through prophets","Through Scripture alone","Through creation","Through angels"], answer:2, chapter:1},
+  {q:"What does Paul say leads people to repentance?", options:["Fear of judgment","God’s kindness","Law enforcement","Punishment"], answer:1, chapter:2},
+  {q:"Who is considered a true Jew according to Paul?", options:["Outwardly circumcised","Born in Israel","Inwardly by the Spirit","Tradition follower"], answer:2, chapter:2},
+  {q:"According to Scripture, how many people are truly righteous?", options:["Many","Few","None","Only Jews"], answer:2, chapter:3},
+  {q:"On what basis does justification come?", options:["Works","Faith in Jesus","Sacrifice","Obedience"], answer:1, chapter:3},
+  {q:"How was Abraham declared righteous before God?", options:["Works","Circumcision","Faith","Law"], answer:2, chapter:4},
+  {q:"When was righteousness credited to Abraham?", options:["After obedience","Before circumcision","After belief","After leaving land"], answer:1, chapter:4},
+  {q:"Through whom did sin enter the world?", options:["Moses","Abraham","Adam","David"], answer:2, chapter:5},
+  {q:"What does suffering ultimately produce in a believer?", options:["Fear","Weakness","Perseverance","Confusion"], answer:2, chapter:5},
+  {q:"Believers are considered dead to what?", options:["Law","Sin","World","Judgment"], answer:1, chapter:6},
+  {q:"What is described as the wages of sin?", options:["Punishment","Death","Separation","Judgment"], answer:1, chapter:6},
+  {q:"The law is compared to which relationship?", options:["Friendship","Marriage","Servanthood","Brotherhood"], answer:1, chapter:7},
+  {q:"What inner struggle does Paul describe?", options:["Doing what he wants","Not knowing law","Doing what he hates","Ignoring God"], answer:2, chapter:7},
+  {q:"Who experiences no condemnation?", options:["All","Righteous","Those in Christ","Obedient"], answer:2, chapter:8},
+  {q:"Who helps believers in their weakness?", options:["Law","Angels","Spirit","Faith"], answer:2, chapter:8},
+  {q:"What can separate us from God's love?", options:["Sin","Death","Nothing","Trials"], answer:2, chapter:8},
+  {q:"What did God declare to Rebekah about her sons?", options:["Younger serves older","Older serves younger","Equal","None"], answer:1, chapter:9},
+  {q:"On whom does God choose to have mercy?", options:["Deserving","Obedient","Whom He wills","Israel"], answer:2, chapter:9},
+  {q:"How does faith come according to Paul?", options:["Reading","Hearing Word","Prayer","Obedience"], answer:1, chapter:10},
+  {q:"Who will be saved according to Romans?", options:["Righteous","Confess & believe","Jews","Obedient"], answer:1, chapter:10},
+  {q:"Israel is symbolically represented as which tree?", options:["Fig tree","Olive tree","Vine","Cedar"], answer:1, chapter:11},
+  {q:"How are Gentile believers described?", options:["Natural branches","Broken","Wild grafted","Root"], answer:2, chapter:11},
+  {q:"What kind of sacrifice are believers called to offer to God?", options:["Burnt","Living","Sin","Grain"], answer:1, chapter:12},
+  {q:"How does Paul say believers are transformed in their lives?", options:["Effort","Discipline","Renewing mind","Prayer"], answer:2, chapter:12},
+  {q:"Where do governing authorities ultimately derive their authority from?", options:["Govt","People","God","Leaders"], answer:2, chapter:13},
+  {q:"What does love fulfill according to Paul?", options:["Faith","Law","Grace","Justice"], answer:1, chapter:13},
+  {q:"In what matters should believers avoid judging others?", options:["Sin","Faith","Disputable matters","Truth"], answer:2, chapter:14},
+  {q:"What defines the kingdom of God?", options:["Food","Rules","Righteousness peace joy","Sacrifice"], answer:2, chapter:14},
+  {q:"Christ became a servant primarily to whom?", options:["Gentiles","Jews","Poor","All"], answer:1, chapter:15},
+  {q:"What does the God of hope fill believers with?", options:["Strength","Knowledge","Joy & peace","Faith"], answer:2, chapter:15},
+  {q:"Who is commended as a servant of the church?", options:["Priscilla","Phoebe","Mary","Junia"], answer:1, chapter:16},
+  {q:"Who should believers watch out for and avoid?", options:["False teachers","Govt","Persecution","Poverty"], answer:0, chapter:16},
+  {q:"What is described as the power of God for salvation?", options:["Law","Gospel","Faith","Grace"], answer:1, chapter:1},
+  {q:"What is the main purpose of the law according to Paul?", options:["Save","Justify","Reveal sin","Bless"], answer:2, chapter:3},
+  {q:"Who gives life to the dead according to Abraham’s faith?", options:["Angels","God","Faith","Spirit"], answer:1, chapter:4},
+  {q:"What reigns through righteousness leading to eternal life?", options:["Law","Grace","Faith","Spirit"], answer:1, chapter:5},
+  {q:"Those who are led by the Spirit are called what?", options:["Servants","Believers","Sons of God","Apostles"], answer:2, chapter:8},
+  {q:"What did Israel pursue but fail to attain?", options:["Faith","Grace","Righteousness","Salvation"], answer:2, chapter:9},
+  {q:"What supports and nourishes the branches (Israel metaphor)?", options:["Faith","Law","Patriarchs/promises","Covenant"], answer:2, chapter:11}
 ];
 
 const form = document.getElementById("quizForm");
@@ -66,11 +80,13 @@ const form = document.getElementById("quizForm");
 questions.forEach((item, index) => {
   const div = document.createElement("div");
   div.classList.add("question");
+  div.id = `qbox${index}`;
 
-  let html = `<p>${index + 1}. ${item.q}</p>`;
+  let html = `<p>${index + 1}. ${item.q} <span style='font-weight:normal'>(Ch ${item.chapter})</span></p>`;
   item.options.forEach((opt, i) => {
     html += `<label><input type="radio" name="q${index}" value="${i}"> ${opt}</label><br>`;
   });
+  html += `<div class="error" id="error${index}"></div>`;
 
   div.innerHTML = html;
   form.appendChild(div);
@@ -78,15 +94,62 @@ questions.forEach((item, index) => {
 
 function submitQuiz() {
   let score = 0;
+  let unanswered = false;
+  let incorrectChapters = new Set();
 
   questions.forEach((q, i) => {
     const selected = document.querySelector(`input[name=q${i}]:checked`);
-    if (selected && parseInt(selected.value) === q.answer) {
-      score++;
+    const errorDiv = document.getElementById(`error${i}`);
+    const box = document.getElementById(`qbox${i}`);
+    errorDiv.textContent = "";
+
+    if (!selected) {
+      errorDiv.textContent = "Please select an answer.";
+      unanswered = true;
+      return;
     }
+
+    const selectedVal = parseInt(selected.value);
+
+    if (selectedVal === q.answer) {
+      score++;
+      box.classList.add("correct");
+    } else {
+      box.classList.add("incorrect");
+      incorrectChapters.add(q.chapter);
+
+      const correctText = q.options[q.answer];
+      const info = document.createElement("div");
+      info.className = "correct-answer";
+      info.innerText = `Correct answer: ${correctText}`;
+      box.appendChild(info);
+    }
+
+    document.querySelectorAll(`input[name=q${i}]`).forEach(inp => inp.disabled = true);
   });
 
-  document.getElementById("result").innerText = `Your Score: ${score} / ${questions.length}`;
+  if (unanswered) {
+    document.getElementById("result").innerText = "Please answer all questions before submitting.";
+    return;
+  }
+
+  let message = `Your Score: ${score} / ${questions.length}\n\n`;
+
+  if (score >= 30) {
+    message += "Well done! You've grasped the essentials of the Book of Romans.";
+  } else if (score >= 20) {
+    message += "Not bad. You could read these chapters: " + Array.from(incorrectChapters).sort((a,b)=>a-b).join(", ");
+  } else if (score >= 10) {
+    message += "Hmm, do read these chapters: " + Array.from(incorrectChapters).sort((a,b)=>a-b).join(", ");
+  } else {
+    message += "No worries, just do the Bible study once more.";
+  }
+
+  document.getElementById("result").innerText = message;
+
+  // Add retake button
+  const retakeDiv = document.getElementById("retakeContainer");
+  retakeDiv.innerHTML = `<br><button onclick="location.reload()">Retake Quiz</button>`;
 }
 </script>
 
