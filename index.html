@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Romans Quiz</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: auto; }
+    .question { margin-bottom: 20px; }
+    button { padding: 10px 15px; font-size: 16px; }
+    #result { font-size: 20px; font-weight: bold; margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+<h1>📖 Romans Quiz</h1>
+<form id="quizForm"></form>
+<button onclick="submitQuiz()">Submit</button>
+<div id="result"></div>
+
+<script>
+const questions = [
+  {q:"What does Paul say the gospel reveals?", options:["God’s anger","God’s righteousness","Human weakness","Law and judgment"], answer:1},
+  {q:"How is God’s invisible nature made known?", options:["Through prophets","Through Scripture alone","Through creation","Through angels"], answer:2},
+  {q:"What leads people to repentance?", options:["Fear of judgment","God’s kindness","Law enforcement","Punishment"], answer:1},
+  {q:"Who is considered a true Jew?", options:["Outwardly circumcised","Born in Israel","Inwardly by the Spirit","Tradition follower"], answer:2},
+  {q:"How many are righteous?", options:["Many","Few","None","Only Jews"], answer:2},
+  {q:"Justification comes through:", options:["Works","Faith in Jesus","Sacrifice","Obedience"], answer:1},
+  {q:"Abraham was justified by:", options:["Works","Circumcision","Faith","Law"], answer:2},
+  {q:"Righteousness credited before:", options:["Obedience","Circumcision","Belief","Leaving land"], answer:1},
+  {q:"Sin entered through:", options:["Moses","Abraham","Adam","David"], answer:2},
+  {q:"Suffering produces:", options:["Fear","Weakness","Perseverance","Confusion"], answer:2},
+  {q:"Believers are dead to:", options:["Law","Sin","World","Judgment"], answer:1},
+  {q:"Wages of sin:", options:["Punishment","Death","Separation","Judgment"], answer:1},
+  {q:"Law compared to:", options:["Friendship","Marriage","Servanthood","Brotherhood"], answer:1},
+  {q:"Paul struggles with:", options:["Doing what he wants","Not knowing law","Doing what he hates","Ignoring God"], answer:2},
+  {q:"No condemnation for:", options:["All","Righteous","In Christ","Obedient"], answer:2},
+  {q:"Helps in weakness:", options:["Law","Angels","Spirit","Faith"], answer:2},
+  {q:"Separates from God's love:", options:["Sin","Death","Nothing","Trials"], answer:2},
+  {q:"God told Rebekah:", options:["Younger serves older","Older serves younger","Equal","None"], answer:1},
+  {q:"God has mercy on:", options:["Deserving","Obedient","Whom He wills","Israel"], answer:2},
+  {q:"Faith comes by:", options:["Reading","Hearing Word","Prayer","Obedience"], answer:1},
+  {q:"Who will be saved?", options:["Righteous","Confess & believe","Jews","Obedient"], answer:1},
+  {q:"Israel is like a:", options:["Fig tree","Olive tree","Vine","Cedar"], answer:1},
+  {q:"Gentiles are:", options:["Natural branches","Broken","Wild grafted","Root"], answer:2},
+  {q:"Offer what sacrifice?", options:["Burnt","Living","Sin","Grain"], answer:1},
+  {q:"Transformation by:", options:["Effort","Discipline","Renewing mind","Prayer"], answer:2},
+  {q:"Authorities from:", options:["Govt","People","God","Leaders"], answer:2},
+  {q:"Love fulfills:", options:["Faith","Law","Grace","Justice"], answer:1},
+  {q:"Do not judge over:", options:["Sin","Faith","Disputable matters","Truth"], answer:2},
+  {q:"Kingdom is about:", options:["Food","Rules","Righteousness peace joy","Sacrifice"], answer:2},
+  {q:"Christ served:", options:["Gentiles","Jews","Poor","All"], answer:1},
+  {q:"God fills with:", options:["Strength","Knowledge","Joy & peace","Faith"], answer:2},
+  {q:"Servant commended:", options:["Priscilla","Phoebe","Mary","Junia"], answer:1},
+  {q:"Watch out for:", options:["False teachers","Govt","Persecution","Poverty"], answer:0},
+  {q:"Power of salvation:", options:["Law","Gospel","Faith","Grace"], answer:1},
+  {q:"Law reveals:", options:["Save","Justify","Sin","Bless"], answer:2},
+  {q:"Gives life to dead:", options:["Angels","God","Faith","Spirit"], answer:1},
+  {q:"Reigns through righteousness:", options:["Law","Grace","Faith","Spirit"], answer:1},
+  {q:"Led by Spirit:", options:["Servants","Believers","Sons of God","Apostles"], answer:2},
+  {q:"Israel pursued:", options:["Faith","Grace","Righteousness","Salvation"], answer:2},
+  {q:"Root supports branches:", options:["Faith","Law","Patriarchs/promises","Covenant"], answer:2}
+];
+
+const form = document.getElementById("quizForm");
+
+questions.forEach((item, index) => {
+  const div = document.createElement("div");
+  div.classList.add("question");
+
+  let html = `<p>${index + 1}. ${item.q}</p>`;
+  item.options.forEach((opt, i) => {
+    html += `<label><input type="radio" name="q${index}" value="${i}"> ${opt}</label><br>`;
+  });
+
+  div.innerHTML = html;
+  form.appendChild(div);
+});
+
+function submitQuiz() {
+  let score = 0;
+
+  questions.forEach((q, i) => {
+    const selected = document.querySelector(`input[name=q${i}]:checked`);
+    if (selected && parseInt(selected.value) === q.answer) {
+      score++;
+    }
+  });
+
+  document.getElementById("result").innerText = `Your Score: ${score} / ${questions.length}`;
+}
+</script>
+
+</body>
+</html>
