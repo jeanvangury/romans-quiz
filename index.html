@@ -6,14 +6,36 @@
 
 <style>
 body { font-family: Arial; padding:20px; max-width:800px; margin:auto; }
+
 .question { margin-bottom:20px; padding:10px; border-radius:8px; }
+
+.question p {
+  font-weight: bold;
+  font-size: 16px;
+}
+
 .correct { background:#d4edda; }
 .incorrect { background:#f8d7da; }
+
 .correct-answer { font-size:14px; margin-top:8px; }
-.verse { font-size:13px; margin-top:5px; font-style:italic; color:#333; }
+
+.verse {
+  font-size:13px;
+  margin-top:5px;
+  font-style:italic;
+  color:#333;
+}
+
 .center { text-align:center; margin-top:20px; }
+
 button { padding:10px 15px; font-size:16px; }
-#error { color:red; }
+
+#result {
+  font-size:20px;
+  font-weight:bold;
+  margin-top:20px;
+  white-space:pre-line;
+}
 </style>
 </head>
 
@@ -34,66 +56,68 @@ button { padding:10px 15px; font-size:16px; }
 <script>
 
 const questions = [
-{q:"What does Paul say the gospel reveals about God?",options:["God’s anger","God’s righteousness","Human weakness","Law and judgment"],answer:1,ref:"Romans 1:17",verse:"For in it the righteousness of God is revealed from faith to faith; as it is written, 'The just shall live by faith.'"},
-{q:"How is God’s invisible nature clearly seen by humanity?",options:["Through prophets","Through Scripture alone","Through creation","Through angels"],answer:2,ref:"Romans 1:20",verse:"For since the creation of the world His invisible attributes are clearly seen, being understood by the things that are made."},
-{q:"What does Paul say leads people to repentance?",options:["Fear of judgment","God’s kindness","Law enforcement","Punishment"],answer:1,ref:"Romans 2:4",verse:"The goodness of God leads you to repentance."},
-{q:"Who is considered a true Jew according to Paul?",options:["Outwardly circumcised","Born in Israel","Inwardly by the Spirit","Tradition follower"],answer:2,ref:"Romans 2:29",verse:"He is a Jew who is one inwardly; and circumcision is that of the heart, in the Spirit."},
-{q:"According to Scripture, how many people are truly righteous?",options:["Many","Few","None","Only Jews"],answer:2,ref:"Romans 3:10",verse:"There is none righteous, no, not one."},
-{q:"On what basis does justification come?",options:["Works","Faith in Jesus","Sacrifice","Obedience"],answer:1,ref:"Romans 3:22",verse:"Even the righteousness of God, through faith in Jesus Christ, to all and on all who believe."},
-{q:"How was Abraham declared righteous before God?",options:["Works","Circumcision","Faith","Law"],answer:2,ref:"Romans 4:3",verse:"Abraham believed God, and it was accounted to him for righteousness."},
-{q:"When was righteousness credited to Abraham?",options:["After obedience","Before circumcision","After belief","After leaving land"],answer:1,ref:"Romans 4:10",verse:"How then was it accounted? While he was circumcised, or uncircumcised? Not while circumcised, but while uncircumcised."},
-{q:"Through whom did sin enter the world?",options:["Moses","Abraham","Adam","David"],answer:2,ref:"Romans 5:12",verse:"Through one man sin entered the world, and death through sin."},
-{q:"What does suffering ultimately produce in a believer?",options:["Fear","Weakness","Perseverance","Confusion"],answer:2,ref:"Romans 5:3-4",verse:"Tribulation produces perseverance; and perseverance, character; and character, hope."},
-{q:"Believers are considered dead to what?",options:["Law","Sin","World","Judgment"],answer:1,ref:"Romans 6:2",verse:"How shall we who died to sin live any longer in it?"},
-{q:"What is described as the wages of sin?",options:["Punishment","Death","Separation","Judgment"],answer:1,ref:"Romans 6:23",verse:"For the wages of sin is death, but the gift of God is eternal life in Christ Jesus our Lord."},
-{q:"The law is compared to which relationship?",options:["Friendship","Marriage","Servanthood","Brotherhood"],answer:1,ref:"Romans 7:2",verse:"The woman who has a husband is bound by the law to her husband as long as he lives."},
-{q:"What inner struggle does Paul describe?",options:["Doing what he wants","Not knowing law","Doing what he hates","Ignoring God"],answer:2,ref:"Romans 7:15",verse:"What I hate, that I do."},
-{q:"Who experiences no condemnation?",options:["All","Righteous","Those in Christ","Obedient"],answer:2,ref:"Romans 8:1",verse:"There is therefore now no condemnation to those who are in Christ Jesus."},
-{q:"Who helps believers in their weakness?",options:["Law","Angels","Spirit","Faith"],answer:2,ref:"Romans 8:26",verse:"The Spirit also helps in our weaknesses."},
-{q:"What can separate us from God's love?",options:["Sin","Death","Nothing","Trials"],answer:2,ref:"Romans 8:38-39",verse:"Nothing shall be able to separate us from the love of God which is in Christ Jesus our Lord."},
-{q:"What did God declare to Rebekah about her sons?",options:["Younger serves older","Older serves younger","Equal","None"],answer:1,ref:"Romans 9:12",verse:"The older shall serve the younger."},
-{q:"On whom does God choose to have mercy?",options:["Deserving","Obedient","Whom He wills","Israel"],answer:2,ref:"Romans 9:15",verse:"I will have mercy on whomever I will have mercy."},
-{q:"How does faith come according to Paul?",options:["Reading","Hearing Word","Prayer","Obedience"],answer:1,ref:"Romans 10:17",verse:"Faith comes by hearing, and hearing by the word of God."},
-{q:"Who will be saved according to Romans?",options:["Righteous","Confess & believe","Jews","Obedient"],answer:1,ref:"Romans 10:9",verse:"If you confess with your mouth the Lord Jesus and believe in your heart... you will be saved."},
-{q:"Israel is symbolically represented as which tree?",options:["Fig tree","Olive tree","Vine","Cedar"],answer:1,ref:"Romans 11:17",verse:"You, being a wild olive tree, were grafted in among them."},
-{q:"How are Gentile believers described?",options:["Natural branches","Broken","Wild grafted","Root"],answer:2,ref:"Romans 11:17",verse:"A wild olive tree grafted in."},
-{q:"What kind of sacrifice are believers called to offer to God?",options:["Burnt","Living","Sin","Grain"],answer:1,ref:"Romans 12:1",verse:"Present your bodies a living sacrifice, holy, acceptable to God."},
-{q:"How does Paul say believers are transformed in their lives?",options:["Effort","Discipline","Renewing mind","Prayer"],answer:2,ref:"Romans 12:2",verse:"Be transformed by the renewing of your mind."},
-{q:"Where do governing authorities ultimately derive their authority from?",options:["Govt","People","God","Leaders"],answer:2,ref:"Romans 13:1",verse:"There is no authority except from God."},
-{q:"What does love fulfill according to Paul?",options:["Faith","Law","Grace","Justice"],answer:1,ref:"Romans 13:10",verse:"Love is the fulfillment of the law."},
-{q:"In what matters should believers avoid judging others?",options:["Sin","Faith","Disputable matters","Truth"],answer:2,ref:"Romans 14:1",verse:"Receive one who is weak in the faith, but not to disputes over doubtful things."},
-{q:"What defines the kingdom of God?",options:["Food","Rules","Righteousness peace joy","Sacrifice"],answer:2,ref:"Romans 14:17",verse:"The kingdom of God is not eating and drinking, but righteousness and peace and joy in the Holy Spirit."},
-{q:"Christ became a servant primarily to whom?",options:["Gentiles","Jews","Poor","All"],answer:1,ref:"Romans 15:8",verse:"Jesus Christ has become a servant to the circumcision."},
-{q:"What does the God of hope fill believers with?",options:["Strength","Knowledge","Joy & peace","Faith"],answer:2,ref:"Romans 15:13",verse:"May the God of hope fill you with all joy and peace in believing."},
-{q:"Who is commended as a servant of the church?",options:["Priscilla","Phoebe","Mary","Junia"],answer:1,ref:"Romans 16:1",verse:"I commend to you Phoebe our sister, who is a servant of the church."},
-{q:"Who should believers watch out for and avoid?",options:["False teachers","Govt","Persecution","Poverty"],answer:0,ref:"Romans 16:17",verse:"Note those who cause divisions... and avoid them."},
-{q:"What is described as the power of God for salvation?",options:["Law","Gospel","Faith","Grace"],answer:1,ref:"Romans 1:16",verse:"The gospel of Christ... is the power of God to salvation."},
-{q:"What is the main purpose of the law according to Paul?",options:["Save","Justify","Reveal sin","Bless"],answer:2,ref:"Romans 3:20",verse:"By the law is the knowledge of sin."},
-{q:"Who gives life to the dead according to Abraham’s faith?",options:["Angels","God","Faith","Spirit"],answer:1,ref:"Romans 4:17",verse:"God... who gives life to the dead."},
-{q:"What reigns through righteousness leading to eternal life?",options:["Law","Grace","Faith","Spirit"],answer:1,ref:"Romans 5:21",verse:"Grace might reign through righteousness to eternal life."},
-{q:"Those who are led by the Spirit are called what?",options:["Servants","Believers","Sons of God","Apostles"],answer:2,ref:"Romans 8:14",verse:"As many as are led by the Spirit of God, these are sons of God."},
-{q:"What did Israel pursue but fail to attain?",options:["Faith","Grace","Righteousness","Salvation"],answer:2,ref:"Romans 9:31",verse:"Israel... has not attained the law of righteousness."},
-{q:"What supports and nourishes the branches (Israel metaphor)?",options:["Faith","Law","Patriarchs/promises","Covenant"],answer:2,ref:"Romans 11:18",verse:"You do not support the root, but the root supports you."}
+{q:"What does Paul say the gospel reveals about God?",options:["God’s anger","God’s righteousness","Human weakness","Law and judgment"],answer:1,ref:"Romans 1:17",verse:"The righteousness of God is revealed from faith to faith."},
+{q:"How is God’s invisible nature clearly seen by humanity?",options:["Through prophets","Through Scripture alone","Through creation","Through angels"],answer:2,ref:"Romans 1:20",verse:"His invisible attributes are clearly seen, being understood by the things that are made."},
+{q:"What does Paul say leads people to repentance?",options:["Fear","God’s kindness","Law","Punishment"],answer:1,ref:"Romans 2:4",verse:"The goodness of God leads you to repentance."},
+{q:"Who is a true Jew?",options:["Outward","Born","Inward by Spirit","Tradition"],answer:2,ref:"Romans 2:29",verse:"He is a Jew who is one inwardly."},
+{q:"How many are righteous?",options:["Many","Few","None","Jews"],answer:2,ref:"Romans 3:10",verse:"There is none righteous, no, not one."},
+{q:"Justification comes through?",options:["Works","Faith","Sacrifice","Obedience"],answer:1,ref:"Romans 3:22",verse:"Through faith in Jesus Christ."},
+{q:"Abraham was justified by?",options:["Works","Circumcision","Faith","Law"],answer:2,ref:"Romans 4:3",verse:"Abraham believed God."},
+{q:"Righteousness credited before?",options:["Obedience","Circumcision","Belief","Land"],answer:1,ref:"Romans 4:10",verse:"Not while circumcised, but uncircumcised."},
+{q:"Sin entered through?",options:["Moses","Abraham","Adam","David"],answer:2,ref:"Romans 5:12",verse:"Through one man sin entered."},
+{q:"Suffering produces?",options:["Fear","Weakness","Perseverance","Confusion"],answer:2,ref:"Romans 5:3",verse:"Tribulation produces perseverance."},
+{q:"Believers are dead to?",options:["Law","Sin","World","Judgment"],answer:1,ref:"Romans 6:2",verse:"We who died to sin."},
+{q:"Wages of sin?",options:["Punishment","Death","Separation","Judgment"],answer:1,ref:"Romans 6:23",verse:"The wages of sin is death."},
+{q:"Law compared to?",options:["Friendship","Marriage","Servanthood","Brotherhood"],answer:1,ref:"Romans 7:2",verse:"Bound by law to husband."},
+{q:"Paul’s struggle?",options:["Doing what he wants","Not knowing law","Doing what he hates","Ignoring"],answer:2,ref:"Romans 7:15",verse:"What I hate, that I do."},
+{q:"No condemnation for?",options:["All","Righteous","In Christ","Obedient"],answer:2,ref:"Romans 8:1",verse:"No condemnation in Christ."},
+{q:"Helps in weakness?",options:["Law","Angels","Spirit","Faith"],answer:2,ref:"Romans 8:26",verse:"The Spirit helps our weaknesses."},
+{q:"Separate from love?",options:["Sin","Death","Nothing","Trials"],answer:2,ref:"Romans 8:39",verse:"Nothing shall separate us."},
+{q:"Rebekah prophecy?",options:["Younger serves older","Older serves younger","Equal","None"],answer:1,ref:"Romans 9:12",verse:"The older shall serve the younger."},
+{q:"God shows mercy to?",options:["Deserving","Obedient","Whom He wills","Israel"],answer:2,ref:"Romans 9:15",verse:"I will have mercy on whom I will."},
+{q:"Faith comes by?",options:["Reading","Hearing","Prayer","Obedience"],answer:1,ref:"Romans 10:17",verse:"Faith comes by hearing."},
+{q:"Who will be saved?",options:["Righteous","Confess & believe","Jews","Obedient"],answer:1,ref:"Romans 10:9",verse:"Confess and believe."},
+{q:"Israel is what tree?",options:["Fig","Olive","Vine","Cedar"],answer:1,ref:"Romans 11:17",verse:"Olive tree."},
+{q:"Gentiles are?",options:["Natural","Broken","Wild grafted","Root"],answer:2,ref:"Romans 11:17",verse:"Wild branches grafted."},
+{q:"Type of sacrifice?",options:["Burnt","Living","Sin","Grain"],answer:1,ref:"Romans 12:1",verse:"Living sacrifice."},
+{q:"Transformation by?",options:["Effort","Discipline","Renewing mind","Prayer"],answer:2,ref:"Romans 12:2",verse:"Renewing your mind."},
+{q:"Authority from?",options:["Govt","People","God","Leaders"],answer:2,ref:"Romans 13:1",verse:"Authorities are appointed by God."},
+{q:"Love fulfills?",options:["Faith","Law","Grace","Justice"],answer:1,ref:"Romans 13:10",verse:"Love fulfills the law."},
+{q:"Do not judge in?",options:["Sin","Faith","Disputable matters","Truth"],answer:2,ref:"Romans 14:1",verse:"Disputable matters."},
+{q:"Kingdom is?",options:["Food","Rules","Righteousness peace joy","Sacrifice"],answer:2,ref:"Romans 14:17",verse:"Righteousness, peace, joy."},
+{q:"Christ servant to?",options:["Gentiles","Jews","Poor","All"],answer:1,ref:"Romans 15:8",verse:"Servant to circumcision."},
+{q:"God fills with?",options:["Strength","Knowledge","Joy & peace","Faith"],answer:2,ref:"Romans 15:13",verse:"Joy and peace."},
+{q:"Church servant?",options:["Priscilla","Phoebe","Mary","Junia"],answer:1,ref:"Romans 16:1",verse:"Phoebe."},
+{q:"Watch out for?",options:["False teachers","Govt","Persecution","Poverty"],answer:0,ref:"Romans 16:17",verse:"Avoid those causing division."},
+{q:"Power of God?",options:["Law","Gospel","Faith","Grace"],answer:1,ref:"Romans 1:16",verse:"Gospel is power."},
+{q:"Law purpose?",options:["Save","Justify","Reveal sin","Bless"],answer:2,ref:"Romans 3:20",verse:"Knowledge of sin."},
+{q:"Gives life to dead?",options:["Angels","God","Faith","Spirit"],answer:1,ref:"Romans 4:17",verse:"God gives life."},
+{q:"Reigns through righteousness?",options:["Law","Grace","Faith","Spirit"],answer:1,ref:"Romans 5:21",verse:"Grace reigns."},
+{q:"Led by Spirit are?",options:["Servants","Believers","Sons of God","Apostles"],answer:2,ref:"Romans 8:14",verse:"Sons of God."},
+{q:"Israel failed to attain?",options:["Faith","Grace","Righteousness","Salvation"],answer:2,ref:"Romans 9:31",verse:"Did not attain righteousness."},
+{q:"Root supports?",options:["Faith","Law","Patriarchs/promises","Covenant"],answer:2,ref:"Romans 11:18",verse:"Root supports you."}
 ];
 
 const form = document.getElementById("quizForm");
 
-questions.forEach((item, index) => {
-  const div = document.createElement("div");
-  div.classList.add("question");
-  div.id = `qbox${index}`;
+questions.forEach((item,index)=>{
+const div=document.createElement("div");
+div.classList.add("question");
+div.id=`qbox${index}`;
 
-  let html = `<p>${index+1}. ${item.q}</p>`;
-  item.options.forEach((opt,i)=>{
-    html += `<label><input type="radio" name="q${index}" value="${i}"> ${opt}</label><br>`;
-  });
+let html=`<p>${index+1}. ${item.q}</p>`;
+item.options.forEach((opt,i)=>{
+html+=`<label><input type="radio" name="q${index}" value="${i}"> ${opt}</label><br>`;
+});
 
-  div.innerHTML = html;
-  form.appendChild(div);
+div.innerHTML=html;
+form.appendChild(div);
 });
 
 function submitQuiz(){
+
 let score=0;
+let total=questions.length;
 
 questions.forEach((q,i)=>{
 const selected=document.querySelector(`input[name=q${i}]:checked`);
@@ -111,8 +135,11 @@ box.classList.add("incorrect");
 
 const info=document.createElement("div");
 info.className="correct-answer";
-info.innerHTML=`<b>Correct Answer:</b> ${q.options[q.answer]}<br>
-<span class="verse">${q.ref} – ${q.verse}</span>`;
+
+info.innerHTML=`
+<b>Correct Answer:</b> ${q.options[q.answer]}<br>
+<span class="verse">${q.ref} – ${q.verse}</span>
+`;
 
 box.appendChild(info);
 }
@@ -120,7 +147,22 @@ box.appendChild(info);
 document.querySelectorAll(`input[name=q${i}]`).forEach(inp=>inp.disabled=true);
 });
 
-document.getElementById("result").innerText=`Your Score: ${score}/${questions.length}`;
+let message=`Your Score: ${score} / ${total}\n\n`;
+
+if(score >= 30){
+message += "Excellent! You've mastered Romans 🎉";
+}
+else if(score >= 20){
+message += "Good job! Strong understanding 👍";
+}
+else if(score >= 10){
+message += "Keep growing — you're getting there 📖";
+}
+else{
+message += "Review Romans again and try once more 💪";
+}
+
+document.getElementById("result").innerText=message;
 
 document.getElementById("retakeContainer").innerHTML=
 `<br><button onclick="location.reload()">Retake Quiz</button>`;
