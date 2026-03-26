@@ -36,6 +36,119 @@ button { padding:10px 15px; font-size:16px; }
   margin-top:20px;
   white-space:pre-line;
 }
+
+input[type="text"] {
+  padding:10px 12px;
+  font-size:16px;
+  width: 260px;
+  max-width: 100%;
+  box-sizing:border-box;
+}
+
+/* Certificate */
+#certificateContainer { display:none; margin-top: 24px; }
+.certificate {
+  width: 760px;
+  max-width: 100%;
+  position: relative;
+  padding: 36px 28px 92px;
+  background: #f7f7f7;
+  border: 10px solid #7a2e2e;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+.certificate::after {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(122,46,46,0.35);
+  pointer-events: none;
+}
+
+.cert-corner {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #8b3a3a, #6a2323);
+  opacity: 0.95;
+}
+.cert-corner.tl { top: -16px; left: -16px; clip-path: polygon(0 0, 100% 0, 0 100%); }
+.cert-corner.tr { top: -16px; right: -16px; clip-path: polygon(0 0, 100% 0, 100% 100%); }
+.cert-corner.bl { bottom: -16px; left: -16px; clip-path: polygon(0 0, 0 100%, 100% 100%); }
+.cert-corner.br { bottom: -16px; right: -16px; clip-path: polygon(100% 0, 0 100%, 100% 100%); }
+
+.certificate h2 {
+  margin: 0;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 36px;
+  letter-spacing: 4px;
+  font-weight: 700;
+}
+.certificate .company {
+  font-size: 14px;
+  font-weight: 700;
+  color: #333;
+  text-align: center;
+  margin-bottom: 18px;
+}
+.certificate .small {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #333;
+}
+.certificate #certName {
+  font-family: "Brush Script MT", "Lucida Handwriting", "Segoe Script", cursive;
+  font-size: 46px;
+  margin-top: 10px;
+}
+.certificate .meta {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+}
+.certificate .awardBy {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #333;
+  font-weight: 700;
+}
+
+.cert-emblem {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0 8px;
+}
+.cert-emblem svg {
+  width: 92px;
+  height: 92px;
+}
+
+.cert-footer {
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  bottom: 26px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+}
+.sig-block {
+  flex: 1;
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+}
+.sig-line {
+  height: 2px;
+  width: 190px;
+  margin: 0 auto 8px;
+  background: #333;
+}
+.sig-block.right .sig-line {
+  width: 190px;
+}
 </style>
 </head>
 
@@ -43,6 +156,11 @@ button { padding:10px 15px; font-size:16px; }
 
 <h1>📖 Romans Quiz</h1>
 <p><em>Please select the right option for each question.</em></p>
+
+<div class="center">
+  <label for="nameInput" style="display:block; font-size:16px; margin-bottom:8px; font-weight:700;">Your Name</label>
+  <input id="nameInput" type="text" placeholder="Enter your name" autocomplete="name" />
+</div>
 
 <form id="quizForm"></form>
 
@@ -52,6 +170,35 @@ button { padding:10px 15px; font-size:16px; }
 
 <div id="result"></div>
 <div class="center" id="retakeContainer"></div>
+
+<div id="certificateContainer" class="center">
+  <div class="certificate">
+    <span class="cert-corner tl" aria-hidden="true"></span>
+    <span class="cert-corner tr" aria-hidden="true"></span>
+    <span class="cert-corner bl" aria-hidden="true"></span>
+    <span class="cert-corner br" aria-hidden="true"></span>
+
+    <h2>CERTIFICATE<br>OF ACHIEVEMENT</h2>
+    <div class="small">This certificate awarded to:</div>
+    <div id="certName"></div>
+
+    <div class="cert-emblem" aria-hidden="true">
+      <!-- Simple laurel-style mark -->
+      <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M60 90 C47 78 45 61 50 44 C43 46 36 53 33 62 C29 75 35 92 48 102"
+              stroke="#d9b45b" stroke-width="5" stroke-linecap="round"/>
+        <path d="M60 90 C73 78 75 61 70 44 C77 46 84 53 87 62 C91 75 85 92 72 102"
+              stroke="#d9b45b" stroke-width="5" stroke-linecap="round"/>
+        <path d="M43 36 C40 29 41 22 45 18 C50 13 57 15 60 22 C63 15 70 13 75 18 C79 22 80 29 77 36"
+              stroke="#d9b45b" stroke-width="5" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <div class="meta">Percentage: <span id="certPercent"></span></div>
+    <div class="awardBy">Awarded by Friday Bible Study</div>
+
+  </div>
+</div>
 
 <script>
 
@@ -149,17 +296,28 @@ document.querySelectorAll(`input[name=q${i}]`).forEach(inp=>inp.disabled=true);
 
 let message=`Your Score: ${score} / ${total}\n\n`;
 
-if(score >= 30){
-message += "Excellent! You've grasped the essentials of Romans 🎉";
+const nameInput = document.getElementById("nameInput");
+const participantName = (nameInput && nameInput.value ? nameInput.value.trim() : "");
+const safeName = participantName || "Participant";
+const percentage = total > 0 ? Math.round((score / total) * 100) : 0;
+
+const certificateContainer = document.getElementById("certificateContainer");
+certificateContainer.style.display = "none";
+
+if(score > 30){
+  message += `Excellent, ${safeName}! You've grasped the essentials of Romans 🎉`;
+  certificateContainer.style.display = "block";
+  document.getElementById("certName").innerText = safeName;
+  document.getElementById("certPercent").innerText = `${percentage}%`;
 }
 else if(score >= 20){
-message += "Good effort! Review a few chapters and grow deeper 📖";
+  message += `Good effort, ${safeName}! Review a few chapters and grow deeper 📖`;
 }
 else if(score >= 10){
-message += "You're learning — keep studying Romans carefully 🙏";
+  message += `You're learning, ${safeName}! Keep studying Romans carefully 🙏`;
 }
 else{
-message += "Take time to read Romans again and try once more 💪";
+  message += `Take time to read Romans again, ${safeName}, and try once more 💪`;
 }
 
 document.getElementById("result").innerText=message;
